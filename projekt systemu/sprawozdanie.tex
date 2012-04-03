@@ -1,0 +1,58 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+\documentclass[a4paper,twoside,11pt]{article}
+\usepackage[polish]{babel}
+\usepackage[MeX]{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst,graphicx,amsmath}
+\usepackage[left=2cm,top=2cm,right=2cm,nohead]{geometry}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{float}
+\frenchspacing
+\pagestyle{plain}
+
+\makeatletter
+\renewcommand\@seccntformat[1]{\csname the#1\endcsname.\quad}
+\renewcommand\numberline[1]{#1.\hskip0.7em}
+\makeatother
+
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\scriptsize\bfseries}
+{\end{list}}
+
+\newenvironment{mytinylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\tiny\bfseries}
+{\end{list}}
+
+\usepackage{graphicx}
+\usepackage{color}
+
+\author{\\ ~ \\ Tomasz Gański \\
+Tomasz Gieniusz \\
+Bartosz Jankowski\\
+Grzegorz Marcinkowski\\
+Łukasz Odzioba\\
+Jacek Weremko}
+\title{\LARGE Wykrywacz zachcianek gastronomicznych}
+
+\begin{document}
+
+\input{strona_tytulowa}
+
+\tableofcontents
+
+\newpage
+
+\section{Cel projektu}
+
+\section{Grupa docelowa}
+
+\section{Wymagania}
+
+\section{Technologia}
+
+
+
+\end{document}

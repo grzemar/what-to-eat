@@ -1,0 +1,50 @@
+\makeatletter
+
+\renewcommand{\maketitle}{
+	\begin{titlepage}
+		\begin{center}
+			\small Politechnika Gdańska \\ Wydział Elektroniki, Telekomunikacji i Informatyki
+		\end{center}
+		\vspace{3cm}
+		\noindent \rule{\linewidth}{0.4mm}
+		\begin{center}
+			\textsc{
+				\huge{Projekt systemu } \\
+				\vspace{0.3ex}
+				\LARGE{Systemy z Bazą Wiedzy}
+			}
+			\\
+			\vspace{1em}
+			\Large{\@title}
+		\end{center}
+		\rule{\linewidth}{0.4mm}
+		\vspace{1em}
+		\begin{center}
+			\large Autorzy: \@author
+		\end{center}
+		\vspace{7em}
+		\ifpdf
+			\begin{tabularx}{\textwidth}{ X X }
+				\makebox[0.5\textwidth][l]{
+					\hspace{1cm}
+					\includegraphics[width=4cm]{logo_pg}
+				}
+				&
+				\makebox[0.5\textwidth][r]{
+					\includegraphics[width=4cm]{logo_eti}
+					\hspace{1cm}
+				}
+			\end{tabularx}
+		\fi
+		% Duży odstęp, który powoduje, że stopka z datą pojawia się na dole. Dokładniej wypycha ją
+		% poza stronę, ale latex na to nie pozwala i umieszcza ją na końcu strony.
+		\vspace*{\stretch{6}}
+		\begin{center}
+			Gdańsk, \@date \ r.
+		\end{center}
+	\end{titlepage}
+}
+
+\makeatother
+
+\maketitle{}

@@ -82,7 +82,6 @@ Dodatkowo aplikacja powinna umożliwiać dzielenie się swoimi zachciankami na F
 Jeśli kilku znajomych ma ochotę na pizze to warto zaproponować im wspólne wyjście do pizzerii, a dzięki współpracy z firmą Groupon możemy uzyskać środki na rozwój systemu.
 \section{Technologia}
 Projekt zostanie wykonany na platformę mobilną Android (zgodność z wersjami Donut i nowszymi). Wykorzystane zostanie natywne API systemu, a także system AdMob w celu wyświetlania reklam po umieszczeniu aplikacji w Android Market. Aplikacja do działania będzie wymagała dostępu do internetu oraz aktualnej lokacji użytkownika.
-System uczący będzie zaimplementowany w formie sieci neuronowej której współczynniki będa zapisywane do pamięci trwałej, tak aby zachować jej stan pomiędzy uruchomieniami aplikacji.
 Interfejs użytkownika powinien być wyraźny i czytelny nawet dla użytkownika znajdującego sie w stanie upojenia alkoholowego.
 
 \end{document}

@@ -46,11 +46,14 @@ Jacek Weremko}
 \newpage
 
 \section{Cel projektu}
-Celem projektu jest stworzenie systemu doradczego, ułatwiającego życie każdego człowieka. Każdy z nas bywa w sytuacjach, gdy jest głodny lecz niezdecydowany co do konkretnej potrawy. 
+Celem projektu jest stworzenie systemu doradczego, ułatwiającego życie każdego człowieka. Każdy z nas bywa w sytuacjach, gdy jest głodny lecz niezdecydowany co do konkretnej potrawy. \\ 
+
 System na podstawie wielu parametrów, takich jak wiek użytkownika, aktualna pora dnia, roku, pogoda, itp. będzie w stanie ułatwić użytkownikowi podjęcie decyzji sugerując mu typowe potrawy, które mogą pobudzić jego kubki smakowe.
 
 \section{Grupa docelowa}
-Grupą docelową są przede wszystkim amerykańskie nastolatki, które z nudów ściągają każdą aplikację dostępną w internecie, a także ludzie regularnie podjadający rozmaite smakołyki i znudzeni niezmienną zawartością szafki ze słodyczami. Dodatkowo aplikacja może zainteresować ludzi lubiących wyzwania, a także przydać się na różnego rodzaju imprezach dostarczając rozrywki.
+Grupą docelową są przede wszystkim amerykańskie nastolatki, które z nudów ściągają każdą aplikację dostępną w internecie, a także ludzie regularnie podjadający rozmaite smakołyki i znudzeni niezmienną zawartością szafki ze słodyczami. \\
+
+Dodatkowo aplikacja może zainteresować ludzi lubiących wyzwania, a także przydać się na różnego rodzaju imprezach dostarczając rozrywki.
 
 \section{Wymagania}
 \subsection{Wejście do systemu}
@@ -63,10 +66,14 @@ System automatycznego doradcy gastronomicznego powinien umożliwiać generowanie
 \item płeć użytkownika
 \item lokacja użytkownika
 \end{itemize}
-Opcjonalnie użytkownik może zapewnić dodatkowe dane wejściowe do systemu poruszając telefonem, które wydobędziemy za pomocą akcelerometru. 
-System może także brać pod uwagę opinie użytkownika dotyczącą poprzedniej propozycji. Przykładowo po wykryciu ciągu komentarzy \emph{zbyt tuczące} system domyśli się, że użytkownik jest na diecie i rzadziej będzie proponował tłuste jedzenie.
+
+Opcjonalnie użytkownik może zapewnić dodatkowe dane wejściowe do systemu poruszając telefonem, które wydobędziemy za pomocą akcelerometru. \\
+
+System może także brać pod uwagę opinie użytkownika dotyczącą poprzedniej propozycji. Przykładowo po wykryciu ciągu komentarzy \emph{zbyt tuczące} system domyśli się, że użytkownik jest na diecie i rzadziej będzie proponował tłuste jedzenie. \\
+
 Dodatkową informacją wejściową dla systemu może być informacja co dziś zjadł, tak aby system mógł obliczyć zapotrzebowanie energetyczne użytkownika lub nie proponować użytkownikowi potrawy którą dziś już jadł.
 
+\newpage
 \subsection{Wynik}
 Informacje wyświetlane po ustaleniu gastronomicznej zachcianki użytkownika:
 \begin{itemize}
@@ -74,16 +81,39 @@ Informacje wyświetlane po ustaleniu gastronomicznej zachcianki użytkownika:
 \item obrazek wzmacniający głód i utwierdzający w słuszności predykcji
 \item opis produktu
 \end{itemize}
+
 Dzięki wykorzystaniu informacji o położeniu i użyciu wyszukiwarki Google system może zaproponować użytkownikowi
 najbliższą pizzerię, gdy ten ma ochotę na pizze, lub w podobny sposób rozwiązać jego problem o którym jeszcze nie wie. Narzędzie to będzie pomocne zwłaszcza po wykryciu, że użytkownik jest w \emph{obcym} mieście
 i na pewno doceni pomoc systemu.
 \subsection{Dodatkowe}
-Dodatkowo aplikacja powinna umożliwiać dzielenie się swoimi zachciankami na Facebooku oraz podlgądanie na co mają ochotę nasi znajomi.
+Dodatkowo aplikacja powinna umożliwiać dzielenie się swoimi zachciankami na Facebooku oraz podglądanie na co mają ochotę nasi znajomi.
+
 Jeśli kilku znajomych ma ochotę na pizze to warto zaproponować im wspólne wyjście do pizzerii, a dzięki współpracy z firmą Groupon możemy uzyskać środki na rozwój systemu.
 \section{Technologia}
-Projekt zostanie wykonany na platformę mobilną Android (zgodność z wersjami Donut i nowszymi). Wykorzystane zostanie natywne API systemu, a także system AdMob w celu wyświetlania reklam po umieszczeniu aplikacji w Android Market. Aplikacja do działania będzie wymagała dostępu do internetu oraz aktualnej lokacji użytkownika.
-System uczący będzie zaimplementowany w formie sieci neuronowej której współczynniki będa zapisywane do pamięci trwałej, tak aby zachować jej stan pomiędzy uruchomieniami aplikacji.
+Projekt zostanie wykonany na platformę mobilną Android (zgodność z wersjami Donut i nowszymi). Wykorzystane zostanie natywne API systemu, a także system AdMob w celu wyświetlania reklam po umieszczeniu aplikacji w Android Market. \\
+
+Aplikacja do działania będzie wymagała dostępu do internetu oraz aktualnej lokacji użytkownika. \\
+
+System uczący będzie zaimplementowany w formie sieci neuronowej której współczynniki będa zapisywane do pamięci trwałej, tak aby zachować jej stan pomiędzy uruchomieniami aplikacji. \\
+
+
 Interfejs użytkownika powinien być wyraźny i czytelny nawet dla użytkownika znajdującego sie w stanie upojenia alkoholowego.
+
+\section{Zadania do wykonania}
+\begin{itemize}
+\item analiza zagadnienia sieci neuronowych
+\item stworzenie sieci neuronowej
+\item przygotowanie zestawu uczacego do testow sieci neuronowej
+\item stworzenie bazy produktow
+\item opracowanie interfejsu graficznego
+\item implementacja systemu powiadomien na facebooku
+\item implementacja systemu grupowania zachciianek przyjaciol
+\item analiza android API
+\item projekt systemu
+\item przygotowanie prezentacji produktu
+\end{itemize}
+
+\section{Podział pracy}
 \begin{center}
 \begin{tabular}{|l|p{11cm}|l|}
   \hline 
@@ -93,13 +123,13 @@ Interfejs użytkownika powinien być wyraźny i czytelny nawet dla użytkownika 
  \hline
   Tomasz Gieniusz & Opracowanie koncepcji & 1 \\
  \hline
-  Tomasz Gański & Opracowanie koncepcji & 1 h\\
+  Tomasz Gański & Opracowanie koncepcji & 1 \\
  \hline 
-  Bartosz Jankowski & Opracowanie koncepcji & 1 h \\
+  Bartosz Jankowski & Opracowanie koncepcji & 1 \\
  \hline
-  Kraken &  & 1/6 \\
+  Grzegorz Marcinkowski &  & 1/6 \\
  \hline
-  Jacek &  & 0 \\
+  Jacek Weremko &  & 0 \\
  \hline
 \end{tabular} 
 \end{center}

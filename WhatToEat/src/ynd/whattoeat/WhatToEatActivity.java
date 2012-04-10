@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
@@ -45,12 +46,24 @@ public class WhatToEatActivity extends Activity {
 				}
 			}
 		});
+		
+		
+		Button b2  = (Button) findViewById(R.id.button2);
+		b2.setOnClickListener(new OnClickListener(){
 
+			@Override
+			public void onClick(View arg0) {
+				 Intent myIntent = new Intent(arg0.getContext(), Map.class);
+                 startActivityForResult(myIntent, 0);
+			}
+			
+		});
 		LocationHelper.init(this);
 		LocationHelper.getInstance().addFoundBetterLocationListener(new FoundBetterLocationListener() {
 
 			@Override
 			public void foundBetterLocation(Location newLocation) {
+				
 				locationTxt.setText(LocationHelper.getInstance().getCurrentAddress().toString());
 			}
 		});

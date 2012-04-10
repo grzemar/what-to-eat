@@ -50,17 +50,29 @@ public class WhatToEatActivity extends Activity implements AdListener, FoundBett
 				whatToEat();
 			}
 		});
+<<<<<<< HEAD
 		
 		
-		Button b2 = (Button) findViewById(R.id.buttonMap);
-		b2.setOnClickListener(new OnClickListener() {
+		Button b2  = (Button) findViewById(R.id.button2);
+		b2.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public void onClick(View v) {
-				Intent  myIntent = new Intent(v.getContext(), Map.class);
-				   startActivityForResult(myIntent, 0);
+			public void onClick(View arg0) {
+				 Intent myIntent = new Intent(arg0.getContext(), Map.class);
+                 startActivityForResult(myIntent, 0);
+			}
+			
+		});
+		LocationHelper.init(this);
+		LocationHelper.getInstance().addFoundBetterLocationListener(new FoundBetterLocationListener() {
+
+			@Override
+			public void foundBetterLocation(Location newLocation) {
+				
+				locationTxt.setText(LocationHelper.getInstance().getCurrentAddress().toString());
 			}
 		});
+=======
 	}
 
 	private void whatToEat() {
@@ -80,6 +92,7 @@ public class WhatToEatActivity extends Activity implements AdListener, FoundBett
 		imgFood = (ImageView) findViewById(R.id.imageFood);
 		locationTxt = (TextView) findViewById(R.id.locationTextView);
 		whatToEatTxt = (TextView) findViewById(R.id.textWhatToEat);
+>>>>>>> 54aa07c3d0b285f5dbacc16dd049ed4ff56da794
 	}
 
 	@Override

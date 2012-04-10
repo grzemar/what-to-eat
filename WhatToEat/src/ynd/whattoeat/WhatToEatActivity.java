@@ -3,7 +3,6 @@ package ynd.whattoeat;
 import java.io.IOException;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,52 +21,53 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
-public class WhatToEatActivity extends Activity implements AdListener {
+public class WhatToEatActivity extends Activity implements AdListener, FoundBetterLocationListener {
+	private ImageView imgFood;
+	private TextView locationTxt;
+	private TextView whatToEatTxt;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		loadControls();
 		loadAd();
+		setClickListeners();
 
-		final ImageView img = (ImageView) findViewById(R.id.imageView1);
-		final EditText txt = (EditText) findViewById(R.id.editText1);
-		final TextView locationTxt = (TextView) findViewById(R.id.locationTextView);
+		LocationHelper.init(this);
+		LocationHelper.getInstance().addFoundBetterLocationListener(this);
+	}
 
-		Button b = (Button) findViewById(R.id.button1);
+	private void setClickListeners() {
+		Button b = (Button) findViewById(R.id.buttonWhatToEat);
 		b.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				try {
-					String googleResult = Utils.getFromURL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + txt.getText().toString());
-					JSONObject googleResultJSON = new JSONObject(googleResult);
-					String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("tbUrl");
-					Bitmap bitmap = Utils.getBitmapFromURL(imageUrl);
-					img.setImageBitmap(bitmap);
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+				whatToEat();
 			}
 		});
+	}
 
-		LocationHelper.init(this);
-		LocationHelper.getInstance().addFoundBetterLocationListener(new FoundBetterLocationListener() {
+	private void whatToEat() {
+		String whatToEat = WhatToEat.whatToEat();
+		whatToEatTxt.setText(whatToEat);
+		try {
+			Bitmap bitmap = Utils.getFirstGoogleImage(whatToEat);
+			imgFood.setImageBitmap(bitmap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 
-			@Override
-			public void foundBetterLocation(Location newLocation) {
-				Address currentAddress = LocationHelper.getInstance().getCurrentAddress();
-				if (currentAddress == null) {
-					String locality = "NIE MA ADRESU!!!!111!";
-				} else {
-					String locality = currentAddress.getLocality();
-					locationTxt.setText(locality + " " + WeatherHelper.getCurrentWeatherInformation());
-				}
-			}
-		});
+	private void loadControls() {
+		imgFood = (ImageView) findViewById(R.id.imageFood);
+		locationTxt = (TextView) findViewById(R.id.locationTextView);
+		whatToEatTxt = (TextView) findViewById(R.id.textWhatToEat);
 	}
 
 	@Override
@@ -102,7 +101,6 @@ public class WhatToEatActivity extends Activity implements AdListener {
 	@Override
 	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 		// TODO Auto-generated method stub
-		System.out.println("onFailedToReceiveAd");
 	}
 
 	@Override
@@ -124,6 +122,12 @@ public class WhatToEatActivity extends Activity implements AdListener {
 
 		View ad = this.findViewById(R.id.adView);
 		ad.setVisibility(View.VISIBLE);
+	}
 
+	@Override
+	public void foundBetterLocation(Location newLocation) {
+		Address currentAddress = LocationHelper.getInstance().getCurrentAddress();
+		String locality = currentAddress == null ? "" : currentAddress.getLocality();
+		locationTxt.setText(locality + " " + WeatherHelper.getCurrentWeatherInformation());
 	}
 }

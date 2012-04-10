@@ -8,9 +8,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.widget.Toast;
 
 public class Utils {
@@ -35,6 +39,14 @@ public class Utils {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static Bitmap getFirstGoogleImage(String query) throws IOException, JSONException {
+		String googleResult = Utils.getFromURL(String.format("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s", Uri.encode(query + " tasty")));
+		JSONObject googleResultJSON = new JSONObject(googleResult);
+		String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("tbUrl");
+		Bitmap bitmap = Utils.getBitmapFromURL(imageUrl);
+		return bitmap;
 	}
 
 	public static void connectionErrorToast(Context context) {

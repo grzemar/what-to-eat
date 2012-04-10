@@ -51,7 +51,7 @@ public class WhatToEatActivity extends Activity {
 
 			@Override
 			public void foundBetterLocation(Location newLocation) {
-				locationTxt.setText(newLocation.toString());
+				locationTxt.setText(LocationHelper.getInstance().getCurrentAddress().toString());
 			}
 		});
 	}

@@ -1,10 +1,14 @@
 package ynd.whattoeat;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,15 +25,19 @@ public class LocationHelper implements LocationListener {
 		return instance;
 	}
 
+	private Activity context;
 	private Location bestKnownLocation;
 	private LocationManager locationManager;
 	private boolean updatingLocation = false;
-
 	private List<FoundBetterLocationListener> foundBetterLocationListeners = new LinkedList<FoundBetterLocationListener>();
 
 	private LocationHelper(Activity context) {
+		this.context = context;
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		setInitialLocation();
+	}
 
+	private void setInitialLocation() {
 		reBestLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
 		reBestLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
 	}
@@ -138,5 +146,18 @@ public class LocationHelper implements LocationListener {
 
 	public Location getBestKnownLocation() {
 		return bestKnownLocation;
+	}
+
+	public Address getCurrentAddress() {
+		Geocoder geocoder = new Geocoder(context, Locale.ENGLISH);
+
+		try {
+			List<Address> addresses = geocoder.getFromLocation(bestKnownLocation.getLatitude(), bestKnownLocation.getLongitude(), 1);
+			if (addresses.size() > 0)
+				return addresses.get(0);
+		} catch (IOException e) {
+		}
+
+		return null;
 	}
 }

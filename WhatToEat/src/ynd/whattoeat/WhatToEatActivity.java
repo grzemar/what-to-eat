@@ -61,12 +61,9 @@ public class WhatToEatActivity extends Activity implements AdListener {
 			@Override
 			public void foundBetterLocation(Location newLocation) {
 				Address currentAddress = LocationHelper.getInstance().getCurrentAddress();
-				if(currentAddress == null)
-				{
+				if (currentAddress == null) {
 					String locality = "NIE MA ADRESU!!!!111!";
-				}
-				else
-				{
+				} else {
 					String locality = currentAddress.getLocality();
 					locationTxt.setText(locality + " " + WeatherHelper.getCurrentWeatherInformation());
 				}

@@ -44,7 +44,7 @@ public class Utils {
 	public static Bitmap getFirstGoogleImage(String query) throws IOException, JSONException {
 		String googleResult = Utils.getFromURL(String.format("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s", Uri.encode(query + " tasty")));
 		JSONObject googleResultJSON = new JSONObject(googleResult);
-		String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("tbUrl");
+		String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("url");
 		Bitmap bitmap = Utils.getBitmapFromURL(imageUrl);
 		return bitmap;
 	}

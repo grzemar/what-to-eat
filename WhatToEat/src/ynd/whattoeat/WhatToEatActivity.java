@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,8 +38,6 @@ public class WhatToEatActivity extends Activity {
 					String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("tbUrl");
 					Bitmap bitmap = Utils.getBitmapFromURL(imageUrl);
 					img.setImageBitmap(bitmap);
-
-					locationTxt.setText(LocationHelper.getInstance().getBestKnownLocation().toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (JSONException e) {
@@ -48,6 +47,24 @@ public class WhatToEatActivity extends Activity {
 		});
 
 		LocationHelper.init(this);
+		LocationHelper.getInstance().addFoundBetterLocationListener(new FoundBetterLocationListener() {
+
+			@Override
+			public void foundBetterLocation(Location newLocation) {
+				locationTxt.setText(newLocation.toString());
+			}
+		});
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		LocationHelper.getInstance().stopLocationUpdates();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		LocationHelper.getInstance().startLocationUpdates();
+	}
 }

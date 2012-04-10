@@ -1,5 +1,8 @@
 package ynd.whattoeat;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -12,30 +15,59 @@ public class LocationHelper implements LocationListener {
 
 	private static LocationHelper instance;
 
-	private Location bestKnownLocation;
-
-	private LocationHelper(Activity context) {
-		LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
-		reBestLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
-		reBestLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-	}
-
 	public static LocationHelper getInstance() {
 		if (instance == null)
 			throw new RuntimeException("Call init first!");
 		return instance;
 	}
 
+	private Location bestKnownLocation;
+	private LocationManager locationManager;
+	private boolean updatingLocation = false;
+
+	private List<FoundBetterLocationListener> foundBetterLocationListeners = new LinkedList<FoundBetterLocationListener>();
+
+	private LocationHelper(Activity context) {
+		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+		reBestLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+		reBestLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+	}
+
+	public void startLocationUpdates() {
+		if (!updatingLocation) {
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+			updatingLocation = true;
+		}
+	}
+
+	public void stopLocationUpdates() {
+		if (updatingLocation) {
+			locationManager.removeUpdates(this);
+			updatingLocation = false;
+		}
+	}
+
 	public static void init(Activity context) {
 		instance = new LocationHelper(context);
+		instance.startLocationUpdates();
 	}
 
 	private void reBestLocation(Location newLocation) {
-		if (isBetterLocation(newLocation, bestKnownLocation))
+		if (isBetterLocation(newLocation, bestKnownLocation)) {
 			bestKnownLocation = newLocation;
+			fireFoundBetterLocationEvent();
+		}
+	}
+
+	private void fireFoundBetterLocationEvent() {
+		for (FoundBetterLocationListener listener : foundBetterLocationListeners)
+			listener.foundBetterLocation(bestKnownLocation);
+	}
+
+	public void addFoundBetterLocationListener(FoundBetterLocationListener listener) {
+		foundBetterLocationListeners.add(listener);
 	}
 
 	protected boolean isBetterLocation(Location newLocation, Location oldLocation) {

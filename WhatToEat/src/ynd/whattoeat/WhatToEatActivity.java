@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class WhatToEatActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -23,6 +24,7 @@ public class WhatToEatActivity extends Activity {
 
 		final ImageView img = (ImageView) findViewById(R.id.imageView1);
 		final EditText txt = (EditText) findViewById(R.id.editText1);
+		final TextView locationTxt = (TextView) findViewById(R.id.locationTextView);
 
 		Button b = (Button) findViewById(R.id.button1);
 		b.setOnClickListener(new OnClickListener() {
@@ -35,6 +37,8 @@ public class WhatToEatActivity extends Activity {
 					String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("tbUrl");
 					Bitmap bitmap = Utils.getBitmapFromURL(imageUrl);
 					img.setImageBitmap(bitmap);
+
+					locationTxt.setText(LocationHelper.getInstance().getBestKnownLocation().toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (JSONException e) {
@@ -43,5 +47,7 @@ public class WhatToEatActivity extends Activity {
 			}
 		});
 
+		LocationHelper.init(this);
 	}
+
 }

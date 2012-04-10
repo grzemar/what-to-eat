@@ -17,12 +17,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class WhatToEatActivity extends Activity {
+import com.google.ads.Ad;
+import com.google.ads.AdListener;
+import com.google.ads.AdRequest;
+import com.google.ads.AdRequest.ErrorCode;
+import com.google.ads.AdView;
+
+public class WhatToEatActivity extends Activity implements AdListener {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		loadAd();
 
 		final ImageView img = (ImageView) findViewById(R.id.imageView1);
 		final EditText txt = (EditText) findViewById(R.id.editText1);
@@ -76,5 +84,49 @@ public class WhatToEatActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		LocationHelper.getInstance().startLocationUpdates();
+	}
+
+	private void loadAd() {
+		AdView adView = (AdView) this.findViewById(R.id.adView);
+		AdRequest request = new AdRequest();
+
+		request.addTestDevice(AdRequest.TEST_EMULATOR);
+
+		adView.loadAd(request);
+		adView.setAdListener(this);
+	}
+
+	@Override
+	public void onDismissScreen(Ad arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
+		// TODO Auto-generated method stub
+		System.out.println("onFailedToReceiveAd");
+	}
+
+	@Override
+	public void onLeaveApplication(Ad arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPresentScreen(Ad arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onReceiveAd(Ad arg0) {
+		View progressBar = this.findViewById(R.id.adProgressBar);
+		progressBar.setVisibility(View.GONE);
+
+		View ad = this.findViewById(R.id.adView);
+		ad.setVisibility(View.VISIBLE);
+
 	}
 }

@@ -53,8 +53,15 @@ public class WhatToEatActivity extends Activity {
 			@Override
 			public void foundBetterLocation(Location newLocation) {
 				Address currentAddress = LocationHelper.getInstance().getCurrentAddress();
-				String locality = currentAddress.getLocality();
-				locationTxt.setText(locality + " " + WeatherHelper.getCurrentWeatherInformation());
+				if(currentAddress == null)
+				{
+					String locality = "NIE MA ADRESU!!!!111!";
+				}
+				else
+				{
+					String locality = currentAddress.getLocality();
+					locationTxt.setText(locality + " " + WeatherHelper.getCurrentWeatherInformation());
+				}
 			}
 		});
 	}

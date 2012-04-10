@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -51,7 +52,9 @@ public class WhatToEatActivity extends Activity {
 
 			@Override
 			public void foundBetterLocation(Location newLocation) {
-				locationTxt.setText(LocationHelper.getInstance().getCurrentAddress().toString());
+				Address currentAddress = LocationHelper.getInstance().getCurrentAddress();
+				String locality = currentAddress.getLocality();
+				locationTxt.setText(locality + " " + WeatherHelper.getCurrentWeatherInformation());
 			}
 		});
 	}

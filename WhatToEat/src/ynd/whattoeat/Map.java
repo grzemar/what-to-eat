@@ -2,6 +2,8 @@ package ynd.whattoeat;
 
 import java.util.List;
 
+import ynd.whattoeat.location.LocationHelper;
+
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;

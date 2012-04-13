@@ -1,4 +1,4 @@
-package ynd.whattoeat;
+package ynd.whattoeat.location;
 
 import android.location.Location;
 

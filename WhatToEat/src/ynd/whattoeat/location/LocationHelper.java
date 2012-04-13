@@ -1,4 +1,4 @@
-package ynd.whattoeat;
+package ynd.whattoeat.location;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -87,7 +87,7 @@ public class LocationHelper implements LocationListener {
 		}
 	}
 
-	public Address getCurrentAddress() throws LocationUnknownException, AddressUnknownException {
+	public Address getCurrentAddress() throws LocationUnknownException {
 		if (bestKnownLocation == null)
 			throw new LocationUnknownException();
 		Geocoder geocoder = new Geocoder(context, Locale.ENGLISH);
@@ -96,9 +96,10 @@ public class LocationHelper implements LocationListener {
 		try {
 			addresses = geocoder.getFromLocation(bestKnownLocation.getLatitude(), bestKnownLocation.getLongitude(), 1);
 		} catch (IOException e) {
+		} finally {
+			if (addresses.isEmpty())
+				throw new LocationUnknownException();
 		}
-		if (addresses.isEmpty())
-			throw new AddressUnknownException();
 		return addresses.get(0);
 	}
 

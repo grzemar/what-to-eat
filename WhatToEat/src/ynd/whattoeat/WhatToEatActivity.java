@@ -4,10 +4,17 @@ import java.io.IOException;
 
 import org.json.JSONException;
 
+import ynd.whattoeat.location.LocationEventsListener;
+import ynd.whattoeat.location.LocationHelper;
+import ynd.whattoeat.location.LocationUnknownException;
+import ynd.whattoeat.utils.Utils;
+import ynd.whattoeat.weather.WeatherHelper;
+import ynd.whattoeat.weather.WeatherUnavailableException;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Address;
 import android.location.Criteria;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,9 +32,11 @@ import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
 public class WhatToEatActivity extends Activity implements AdListener, LocationEventsListener {
-	private ImageView imgFood;
-	private TextView locationTxt;
+	private ImageView foodImg;
 	private TextView whatToEatTxt;
+	private Button inputDataButton;
+	private Button whatToEatButton;
+	private Button mapButton;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -56,8 +65,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	}
 
 	private void setClickListeners() {
-		Button b = (Button) findViewById(R.id.buttonWhatToEat);
-		b.setOnClickListener(new OnClickListener() {
+		whatToEatButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -65,8 +73,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 			}
 		});
 
-		Button b2 = (Button) findViewById(R.id.buttonMap);
-		b2.setOnClickListener(new OnClickListener() {
+		mapButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -74,6 +81,51 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 				startActivityForResult(myIntent, 0);
 			}
 		});
+
+		inputDataButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				AlertDialog alertDialog;
+				alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).create();
+				alertDialog.setTitle("Data used");
+				alertDialog.setMessage(getUsedData());
+				alertDialog.setCanceledOnTouchOutside(true);
+				alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				alertDialog.show();
+			}
+		});
+	}
+
+	protected String getUsedData() {
+		StringBuilder ret = new StringBuilder();
+		appendLocationInfo(ret);
+		appendWeatherInfo(ret);
+		return ret.toString();
+	}
+
+	private void appendWeatherInfo(StringBuilder ret) {
+		try {
+			ret.append("Weather: " + WeatherHelper.getInstance().getCachedWeather());
+		} catch (WeatherUnavailableException e) {
+			ret.append("Weather not available");
+		}
+		ret.append("\n");
+	}
+
+	private void appendLocationInfo(StringBuilder ret) {
+		try {
+			ret.append("Location: " + LocationHelper.getInstance(this).getCurrentAddress().getLocality());
+		} catch (LocationUnknownException e) {
+			ret.append("Location not avaialble");
+		}
+		ret.append("\n");
 	}
 
 	private void whatToEat() {
@@ -81,7 +133,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		whatToEatTxt.setText(whatToEat);
 		try {
 			Bitmap bitmap = Utils.getFirstGoogleImage(whatToEat);
-			imgFood.setImageBitmap(bitmap);
+			foodImg.setImageBitmap(bitmap);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
@@ -90,9 +142,11 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	}
 
 	private void loadControls() {
-		imgFood = (ImageView) findViewById(R.id.imageFood);
-		locationTxt = (TextView) findViewById(R.id.locationTextView);
+		foodImg = (ImageView) findViewById(R.id.imageFood);
 		whatToEatTxt = (TextView) findViewById(R.id.textWhatToEat);
+		inputDataButton = (Button) findViewById(R.id.buttonInputData);
+		whatToEatButton = (Button) findViewById(R.id.buttonWhatToEat);
+		mapButton = (Button) findViewById(R.id.buttonMap);
 	}
 
 	@Override
@@ -152,13 +206,13 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	@Override
 	public void foundBetterLocation(Location newLocation) {
 		try {
-			Address currentAddress = LocationHelper.getInstance(this).getCurrentAddress();
-			String locality = currentAddress == null ? "" : currentAddress.getLocality();
-			locationTxt.setText(locality + " " + WeatherHelper.getInstance(this).getCurrentWeatherInformation());
+			WeatherHelper.getInstance().updateCachedWeather(LocationHelper.getInstance(this).getCurrentAddress());
+		} catch (WeatherUnavailableException e) {
+			e.printStackTrace();
 		} catch (LocationUnknownException e) {
 			e.printStackTrace();
-		} catch (AddressUnknownException e) {
-			e.printStackTrace();
+		} finally {
+			Toast.makeText(this, "New input data available, except more accurate results!", Toast.LENGTH_LONG).show();
 		}
 	}
 

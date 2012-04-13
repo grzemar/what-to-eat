@@ -3,11 +3,13 @@ package ynd.whattoeat;
 import ynd.whattoeat.location.LocationEventsListener;
 import ynd.whattoeat.location.LocationHelper;
 import ynd.whattoeat.location.LocationUnknownException;
+import ynd.whattoeat.utils.ImageLoadedCallback;
 import ynd.whattoeat.utils.UrlUtils;
 import ynd.whattoeat.weather.WeatherHelper;
 import ynd.whattoeat.weather.WeatherUnavailableException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -125,14 +127,17 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	}
 
 	private void whatToEat() {
+		final ProgressDialog progressBar = ProgressDialog.show(this, "Loading...", "Determining best dish for you basing on:\n" + getUsedData());
 		String whatToEat = WhatToEat.whatToEat();
 		whatToEatTxt.setText(whatToEat);
-		try {
-			Bitmap bitmap = UrlUtils.getFirstGoogleImage(whatToEat);
-			foodImg.setImageBitmap(bitmap);
-		} catch (Exception e) {
-			Toast.makeText(this, "Couldn't load image of your dish, try again later", Toast.LENGTH_LONG).show();
-		}
+		UrlUtils.getFirstGoogleImage(whatToEat, new ImageLoadedCallback() {
+
+			@Override
+			public void imageLoaded(Bitmap bitmap) {
+				foodImg.setImageBitmap(bitmap);
+				progressBar.cancel();
+			}
+		});
 	}
 
 	private void loadControls() {
@@ -206,7 +211,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		} catch (LocationUnknownException e) {
 			e.printStackTrace();
 		} finally {
-			Toast.makeText(this, "New input data available, except more accurate results!", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "New input data available, expect more accurate results!", Toast.LENGTH_LONG).show();
 		}
 	}
 

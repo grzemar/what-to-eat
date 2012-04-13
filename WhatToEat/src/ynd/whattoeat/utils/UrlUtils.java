@@ -17,6 +17,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.widget.Toast;
 
 public class UrlUtils {
@@ -35,6 +36,27 @@ public class UrlUtils {
 		return all;
 	}
 
+	public static void getFromURL(final String src, final ContentLoadedCallback callback) {
+		AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+
+			@Override
+			protected String doInBackground(Void... params) {
+				try {
+					return getFromURL(src);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(String result) {
+				callback.contentLoaded(result);
+			}
+		};
+		task.execute();
+	}
+
 	public static Bitmap getBitmapFromURL(String src) throws MalformedURLException, IOException {
 		if (cachedImages.containsKey(src))
 			return cachedImages.get(src);
@@ -45,12 +67,59 @@ public class UrlUtils {
 		return bitmap;
 	}
 
+	public static void getBitmapFromURL(final String src, final ImageLoadedCallback callback) {
+		AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
+
+			@Override
+			protected Bitmap doInBackground(Void... params) {
+				try {
+					return getBitmapFromURL(src);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Bitmap result) {
+				callback.imageLoaded(result);
+			}
+		};
+		task.execute();
+	}
+
 	public static Bitmap getFirstGoogleImage(String query) throws IOException, JSONException {
+		String imageUrl = getFirtsGoogleImageUrl(query);
+		Bitmap bitmap = UrlUtils.getBitmapFromURL(imageUrl);
+		return bitmap;
+	}
+
+	private static String getFirtsGoogleImageUrl(String query) throws IOException, JSONException {
 		String googleResult = UrlUtils.getFromURL(String.format("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s", Uri.encode(query + " tasty")));
 		JSONObject googleResultJSON = new JSONObject(googleResult);
 		String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("url");
-		Bitmap bitmap = UrlUtils.getBitmapFromURL(imageUrl);
-		return bitmap;
+		return imageUrl;
+	}
+
+	public static void getFirstGoogleImage(final String query, final ImageLoadedCallback callback) {
+		AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
+
+			@Override
+			protected Bitmap doInBackground(Void... params) {
+				try {
+					return getFirstGoogleImage(query);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Bitmap result) {
+				callback.imageLoaded(result);
+			}
+		};
+		task.execute();
 	}
 
 	public static void connectionErrorToast(Context context) {

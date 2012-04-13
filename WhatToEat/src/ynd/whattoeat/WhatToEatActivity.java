@@ -1,13 +1,9 @@
 package ynd.whattoeat;
 
-import java.io.IOException;
-
-import org.json.JSONException;
-
 import ynd.whattoeat.location.LocationEventsListener;
 import ynd.whattoeat.location.LocationHelper;
 import ynd.whattoeat.location.LocationUnknownException;
-import ynd.whattoeat.utils.Utils;
+import ynd.whattoeat.utils.UrlUtils;
 import ynd.whattoeat.weather.WeatherHelper;
 import ynd.whattoeat.weather.WeatherUnavailableException;
 import android.app.Activity;
@@ -132,12 +128,10 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		String whatToEat = WhatToEat.whatToEat();
 		whatToEatTxt.setText(whatToEat);
 		try {
-			Bitmap bitmap = Utils.getFirstGoogleImage(whatToEat);
+			Bitmap bitmap = UrlUtils.getFirstGoogleImage(whatToEat);
 			foodImg.setImageBitmap(bitmap);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			Toast.makeText(this, "Couldn't load image of your dish, try again later", Toast.LENGTH_LONG).show();
 		}
 	}
 

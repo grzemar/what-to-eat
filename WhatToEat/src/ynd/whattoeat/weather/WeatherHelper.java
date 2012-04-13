@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import ynd.whattoeat.utils.Utils;
+import ynd.whattoeat.utils.UrlUtils;
 import ynd.whattoeat.utils.XMLHelper;
 import android.location.Address;
 
@@ -58,6 +58,6 @@ public class WeatherHelper {
 	private String getWeatherXml(String location) throws URISyntaxException, IOException {
 		URI uri = new URI("http", "www.google.com", "/ig/api", "weather=" + location, null);
 		String src = uri.toASCIIString();
-		return Utils.getFromURL(src);
+		return UrlUtils.getFromURL(src);
 	}
 }

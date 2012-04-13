@@ -1,13 +1,13 @@
-package ynd.whattoeat;
+package ynd.whattoeat.location;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -19,47 +19,65 @@ public class LocationHelper implements LocationListener {
 
 	private static LocationHelper instance;
 
-	public static LocationHelper getInstance() {
+	public static LocationHelper getInstance(Context context) {
 		if (instance == null)
-			throw new RuntimeException("Call init first!");
+			instance = new LocationHelper(context.getApplicationContext());
 		return instance;
 	}
 
-	private Activity context;
+	private Context context;
 	private Location bestKnownLocation;
 	private LocationManager locationManager;
-	private boolean updatingLocation = false;
-	private List<FoundBetterLocationListener> foundBetterLocationListeners = new LinkedList<FoundBetterLocationListener>();
+	private Criteria bestProviderCriteria = new Criteria();
 
-	private LocationHelper(Activity context) {
+	private List<LocationEventsListener> locationEventsListeners = new LinkedList<LocationEventsListener>();
+
+	private LocationHelper(Context context) {
 		this.context = context;
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		setInitialLocation();
 	}
 
 	private void setInitialLocation() {
-		reBestLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
-		reBestLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+		for (String provider : locationManager.getAllProviders())
+			reBestLocation(locationManager.getLastKnownLocation(provider));
 	}
 
 	public void startLocationUpdates() {
-		if (!updatingLocation) {
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-			updatingLocation = true;
-		}
+		listenFromBestProvider();
 	}
 
 	public void stopLocationUpdates() {
-		if (updatingLocation) {
-			locationManager.removeUpdates(this);
-			updatingLocation = false;
-		}
+		locationManager.removeUpdates(this);
 	}
 
-	public static void init(Activity context) {
-		instance = new LocationHelper(context);
-		instance.startLocationUpdates();
+	private void listenFromBestProvider() {
+		String bestProvider = getBestProvider();
+		if (bestProvider == null)
+			fireNoLocationProviderAvailable();
+		else
+			locationManager.requestLocationUpdates(bestProvider, 0, 0, this);
+	}
+
+	private String getBestProvider() {
+		return locationManager.getBestProvider(getBestProviderCriteria(), true);
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		reBestLocation(location);
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
 
 	private void reBestLocation(Location newLocation) {
@@ -69,13 +87,34 @@ public class LocationHelper implements LocationListener {
 		}
 	}
 
+	public Address getCurrentAddress() throws LocationUnknownException {
+		if (bestKnownLocation == null)
+			throw new LocationUnknownException();
+		Geocoder geocoder = new Geocoder(context, Locale.ENGLISH);
+
+		List<Address> addresses = new LinkedList<Address>();
+		try {
+			addresses = geocoder.getFromLocation(bestKnownLocation.getLatitude(), bestKnownLocation.getLongitude(), 1);
+		} catch (IOException e) {
+		} finally {
+			if (addresses.isEmpty())
+				throw new LocationUnknownException();
+		}
+		return addresses.get(0);
+	}
+
+	public void addLocationEventsListeners(LocationEventsListener listener) {
+		locationEventsListeners.add(listener);
+	}
+
 	private void fireFoundBetterLocationEvent() {
-		for (FoundBetterLocationListener listener : foundBetterLocationListeners)
+		for (LocationEventsListener listener : locationEventsListeners)
 			listener.foundBetterLocation(bestKnownLocation);
 	}
 
-	public void addFoundBetterLocationListener(FoundBetterLocationListener listener) {
-		foundBetterLocationListeners.add(listener);
+	private void fireNoLocationProviderAvailable() {
+		for (LocationEventsListener listener : locationEventsListeners)
+			listener.noLocationProviderAvailable();
 	}
 
 	protected boolean isBetterLocation(Location newLocation, Location oldLocation) {
@@ -121,43 +160,16 @@ public class LocationHelper implements LocationListener {
 		return provider1.equals(provider2);
 	}
 
-	@Override
-	public void onLocationChanged(Location location) {
-		reBestLocation(location);
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public Location getBestKnownLocation() {
 		return bestKnownLocation;
 	}
 
-	public Address getCurrentAddress() {
-		Geocoder geocoder = new Geocoder(context, Locale.ENGLISH);
-
-		try {
-			List<Address> addresses = geocoder.getFromLocation(bestKnownLocation.getLatitude(), bestKnownLocation.getLongitude(), 1);
-			if (addresses.size() > 0)
-				return addresses.get(0);
-		} catch (IOException e) {
-		}
-
-		return null;
+	private Criteria getBestProviderCriteria() {
+		return bestProviderCriteria;
 	}
+
+	public void setBestProviderCriteria(Criteria bestProviderCriteria) {
+		this.bestProviderCriteria = bestProviderCriteria;
+	}
+
 }

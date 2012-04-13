@@ -1,4 +1,4 @@
-package ynd.whattoeat;
+package ynd.whattoeat.utils;
 
 import java.io.StringReader;
 

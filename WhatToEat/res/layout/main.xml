@@ -3,45 +3,8 @@
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="bottom|center_horizontal"
+    android:gravity="center"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/textWhatToEat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <ImageView
-            android:id="@+id/imageFood"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_launcher" />
-
-        <Button
-            android:id="@+id/buttonWhatToEat"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="What To Eat?" />
-
-        <TextView
-            android:id="@+id/locationTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="TextView"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/adLayout"
@@ -65,6 +28,57 @@
             android:layout_height="49dp"
             android:layout_marginLeft="135dp"
             android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textWhatToEat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/imageFood"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/ic_launcher" />
+
+        <Button
+            android:id="@+id/buttonWhatToEat"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="What To Eat?" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/buttonInputData"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Data used" />
+
+            <Button
+                android:id="@+id/buttonMap"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Map" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

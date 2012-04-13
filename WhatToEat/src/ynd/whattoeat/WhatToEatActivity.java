@@ -3,7 +3,7 @@ package ynd.whattoeat;
 import ynd.whattoeat.location.LocationEventsListener;
 import ynd.whattoeat.location.LocationHelper;
 import ynd.whattoeat.location.LocationUnknownException;
-import ynd.whattoeat.utils.ImageLoadedCallback;
+import ynd.whattoeat.utils.ContentLoaderCallback;
 import ynd.whattoeat.utils.UrlUtils;
 import ynd.whattoeat.weather.WeatherHelper;
 import ynd.whattoeat.weather.WeatherUnavailableException;
@@ -128,14 +128,21 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 
 	private void whatToEat() {
 		final ProgressDialog progressBar = ProgressDialog.show(this, "Loading...", "Determining best dish for you basing on:\n" + getUsedData());
-		String whatToEat = WhatToEat.whatToEat();
-		whatToEatTxt.setText(whatToEat);
-		UrlUtils.getFirstGoogleImage(whatToEat, new ImageLoadedCallback() {
+		final String whatToEat = WhatToEat.whatToEat();
+		UrlUtils.getFirstGoogleImage(whatToEat, new ContentLoaderCallback<Bitmap>() {
 
 			@Override
-			public void imageLoaded(Bitmap bitmap) {
-				foodImg.setImageBitmap(bitmap);
+			public void contentLoaded(Bitmap result) {
+				whatToEatTxt.setText(whatToEat);
+				foodImg.setImageBitmap(result);
 				progressBar.cancel();
+			}
+
+			@Override
+			public void contentLoadingException(Exception e) {
+				whatToEatTxt.setText(whatToEat);
+				progressBar.cancel();
+				Toast.makeText(WhatToEatActivity.this, "Couldn't load image, try again later.", Toast.LENGTH_LONG).show();
 			}
 		});
 	}

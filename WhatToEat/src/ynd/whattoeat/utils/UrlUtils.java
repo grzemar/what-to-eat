@@ -36,7 +36,7 @@ public class UrlUtils {
 		return all;
 	}
 
-	public static void getFromURL(final String src, final ContentLoadedCallback callback) {
+	public static void getFromURL(final String src, final ContentLoaderCallback<String> callback) {
 		AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
 
 			@Override
@@ -44,14 +44,15 @@ public class UrlUtils {
 				try {
 					return getFromURL(src);
 				} catch (IOException e) {
-					e.printStackTrace();
+					callback.contentLoadingException(e);
 				}
 				return null;
 			}
 
 			@Override
 			protected void onPostExecute(String result) {
-				callback.contentLoaded(result);
+				if (result != null)
+					callback.contentLoaded(result);
 			}
 		};
 		task.execute();
@@ -67,7 +68,7 @@ public class UrlUtils {
 		return bitmap;
 	}
 
-	public static void getBitmapFromURL(final String src, final ImageLoadedCallback callback) {
+	public static void getBitmapFromURL(final String src, final ContentLoaderCallback<Bitmap> callback) {
 		AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
 
 			@Override
@@ -75,14 +76,15 @@ public class UrlUtils {
 				try {
 					return getBitmapFromURL(src);
 				} catch (Exception e) {
-					e.printStackTrace();
+					callback.contentLoadingException(e);
 				}
 				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Bitmap result) {
-				callback.imageLoaded(result);
+				if (result != null)
+					callback.contentLoaded(result);
 			}
 		};
 		task.execute();
@@ -101,7 +103,7 @@ public class UrlUtils {
 		return imageUrl;
 	}
 
-	public static void getFirstGoogleImage(final String query, final ImageLoadedCallback callback) {
+	public static void getFirstGoogleImage(final String query, final ContentLoaderCallback<Bitmap> callback) {
 		AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
 
 			@Override
@@ -109,14 +111,15 @@ public class UrlUtils {
 				try {
 					return getFirstGoogleImage(query);
 				} catch (Exception e) {
-					e.printStackTrace();
+					callback.contentLoadingException(e);
 				}
 				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Bitmap result) {
-				callback.imageLoaded(result);
+				if (result != null)
+					callback.contentLoaded(result);
 			}
 		};
 		task.execute();

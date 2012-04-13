@@ -4,20 +4,36 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import android.content.Context;
 import android.location.Address;
 
 public class WeatherHelper {
-	public static WeatherInformation getCurrentWeatherInformation() {
-		Address currentAddress = LocationHelper.getInstance().getCurrentAddress();
+
+	private static WeatherHelper instance;
+
+	public static WeatherHelper getInstance(Context context) {
+		if (instance == null)
+			instance = new WeatherHelper(context.getApplicationContext());
+		return instance;
+	}
+
+	private Context context;
+
+	private WeatherHelper(Context applicationContext) {
+		this.context = applicationContext;
+	}
+
+	public WeatherInformation getCurrentWeatherInformation() throws LocationUnknownException, AddressUnknownException {
+		Address currentAddress = LocationHelper.getInstance(context).getCurrentAddress();
 		return getWeatherInformation(currentAddress);
 	}
 
-	public static WeatherInformation getWeatherInformation(Address address) {
+	public WeatherInformation getWeatherInformation(Address address) {
 		return getWeatherInformation(address.getLocality());
 
 	}
 
-	public static WeatherInformation getWeatherInformation(String location) {
+	public WeatherInformation getWeatherInformation(String location) {
 		try {
 			String weatherXml = getWeatherXml(location);
 			return new WeatherInformation(weatherXml);

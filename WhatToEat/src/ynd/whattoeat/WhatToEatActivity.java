@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
@@ -22,7 +24,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
-public class WhatToEatActivity extends Activity implements AdListener, FoundBetterLocationListener {
+public class WhatToEatActivity extends Activity implements AdListener, LocationEventsListener {
 	private ImageView imgFood;
 	private TextView locationTxt;
 	private TextView whatToEatTxt;
@@ -37,8 +39,20 @@ public class WhatToEatActivity extends Activity implements AdListener, FoundBett
 		loadAd();
 		setClickListeners();
 
-		LocationHelper.init(this);
-		LocationHelper.getInstance().addFoundBetterLocationListener(this);
+		startLocationHelper();
+	}
+
+	private void startLocationHelper() {
+		LocationHelper locationHelper = LocationHelper.getInstance(this);
+		locationHelper.setBestProviderCriteria(getBestLocationCriteria());
+		locationHelper.addLocationEventsListeners(this);
+	}
+
+	private Criteria getBestLocationCriteria() {
+		Criteria criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+		criteria.setPowerRequirement(Criteria.POWER_LOW);
+		return criteria;
 	}
 
 	private void setClickListeners() {
@@ -50,15 +64,14 @@ public class WhatToEatActivity extends Activity implements AdListener, FoundBett
 				whatToEat();
 			}
 		});
-		
-		
+
 		Button b2 = (Button) findViewById(R.id.buttonMap);
 		b2.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent  myIntent = new Intent(v.getContext(), Map.class);
-				   startActivityForResult(myIntent, 0);
+				Intent myIntent = new Intent(v.getContext(), Map.class);
+				startActivityForResult(myIntent, 0);
 			}
 		});
 	}
@@ -85,13 +98,13 @@ public class WhatToEatActivity extends Activity implements AdListener, FoundBett
 	@Override
 	protected void onPause() {
 		super.onPause();
-		LocationHelper.getInstance().stopLocationUpdates();
+		LocationHelper.getInstance(this).stopLocationUpdates();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		LocationHelper.getInstance().startLocationUpdates();
+		LocationHelper.getInstance(this).startLocationUpdates();
 	}
 
 	private void loadAd() {
@@ -138,8 +151,19 @@ public class WhatToEatActivity extends Activity implements AdListener, FoundBett
 
 	@Override
 	public void foundBetterLocation(Location newLocation) {
-		Address currentAddress = LocationHelper.getInstance().getCurrentAddress();
-		String locality = currentAddress == null ? "" : currentAddress.getLocality();
-		locationTxt.setText(locality + " " + WeatherHelper.getCurrentWeatherInformation());
+		try {
+			Address currentAddress = LocationHelper.getInstance(this).getCurrentAddress();
+			String locality = currentAddress == null ? "" : currentAddress.getLocality();
+			locationTxt.setText(locality + " " + WeatherHelper.getInstance(this).getCurrentWeatherInformation());
+		} catch (LocationUnknownException e) {
+			e.printStackTrace();
+		} catch (AddressUnknownException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void noLocationProviderAvailable() {
+		Toast.makeText(this, "Enable location provider for better results!", Toast.LENGTH_LONG).show();
 	}
 }

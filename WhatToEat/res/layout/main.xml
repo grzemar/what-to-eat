@@ -35,21 +35,31 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textWhatToEat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <ImageView
-            android:id="@+id/imageFood"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/ic_launcher" />
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/imageFood"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/textWhatToEat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=""
+                android:textColor="#ffffff"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="50dp" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/buttonWhatToEat"

@@ -45,7 +45,7 @@ public class ResultActivity extends CommonActivity {
 	private void whatToEat() {
 		final ProgressDialog progressBar = ProgressDialog.show(this, "Loading...", "Determining best dish for you basing on:\n" + UsedData.getInstance(this).getUsedData());
 		final Dish whatToEat = WhatToEat.whatToEat();
-		UrlUtils.getFirstGoogleImage(whatToEat.getName(), new ContentLoaderCallback<Bitmap>() {
+		UrlUtils.getFirstGoogleImage(whatToEat.getName(), false, new ContentLoaderCallback<Bitmap>() {
 
 			@Override
 			public void contentLoaded(Bitmap result) {

@@ -90,26 +90,29 @@ public class UrlUtils {
 		task.execute();
 	}
 
-	public static Bitmap getFirstGoogleImage(String query) throws IOException, JSONException {
-		String imageUrl = getFirtsGoogleImageUrl(query);
+	public static Bitmap getFirstGoogleImage(String query, boolean thumbnail) throws IOException, JSONException {
+		String imageUrl = getFirtsGoogleImageUrl(query, thumbnail);
 		Bitmap bitmap = UrlUtils.getBitmapFromURL(imageUrl);
 		return bitmap;
 	}
 
-	private static String getFirtsGoogleImageUrl(String query) throws IOException, JSONException {
+	private static String getFirtsGoogleImageUrl(String query, boolean thumbnail) throws IOException, JSONException {
 		String googleResult = UrlUtils.getFromURL(String.format("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s", Uri.encode(query + " tasty")));
 		JSONObject googleResultJSON = new JSONObject(googleResult);
-		String imageUrl = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0).getString("url");
-		return imageUrl;
+		JSONObject image = googleResultJSON.getJSONObject("responseData").getJSONArray("results").getJSONObject(0);
+		if (thumbnail)
+			return image.getString("tbUrl");
+		else
+			return image.getString("url");
 	}
 
-	public static void getFirstGoogleImage(final String query, final ContentLoaderCallback<Bitmap> callback) {
+	public static void getFirstGoogleImage(final String query, final boolean thumbnail, final ContentLoaderCallback<Bitmap> callback) {
 		AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
 				try {
-					return getFirstGoogleImage(query);
+					return getFirstGoogleImage(query, thumbnail);
 				} catch (Exception e) {
 					callback.contentLoadingException(e);
 				}

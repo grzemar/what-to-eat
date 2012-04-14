@@ -166,7 +166,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 
 		alertDialog.show();
 
-		UrlUtils.getFirstGoogleImage(whatToEat1.getName(), new ContentLoaderCallback<Bitmap>() {
+		UrlUtils.getFirstGoogleImage(whatToEat1.getName(), true, new ContentLoaderCallback<Bitmap>() {
 
 			@Override
 			public void contentLoaded(Bitmap result) {
@@ -178,7 +178,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 			}
 		});
 
-		UrlUtils.getFirstGoogleImage(whatToEat2.getName(), new ContentLoaderCallback<Bitmap>() {
+		UrlUtils.getFirstGoogleImage(whatToEat2.getName(), true, new ContentLoaderCallback<Bitmap>() {
 
 			@Override
 			public void contentLoaded(Bitmap result) {

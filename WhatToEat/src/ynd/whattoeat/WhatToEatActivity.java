@@ -10,16 +10,19 @@ import ynd.whattoeat.weather.WeatherUnavailableException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,19 +143,19 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 
 	private void whatToEat() {
 		final ProgressDialog progressBar = ProgressDialog.show(this, "Loading...", "Determining best dish for you basing on:\n" + getUsedData());
-		final String whatToEat = WhatToEat.whatToEat();
-		UrlUtils.getFirstGoogleImage(whatToEat, new ContentLoaderCallback<Bitmap>() {
+		final Dish whatToEat = WhatToEat.whatToEat();
+		UrlUtils.getFirstGoogleImage(whatToEat.name, new ContentLoaderCallback<Bitmap>() {
 
 			@Override
 			public void contentLoaded(Bitmap result) {
-				whatToEatTxt.setText(whatToEat);
+				whatToEatTxt.setText(whatToEat.name);
 				foodImg.setImageBitmap(result);
 				progressBar.cancel();
 			}
 
 			@Override
 			public void contentLoadingException(Exception e) {
-				whatToEatTxt.setText(whatToEat);
+				whatToEatTxt.setText(whatToEat.name);
 				progressBar.cancel();
 				Toast.makeText(WhatToEatActivity.this, "Couldn't load image, try again later.", Toast.LENGTH_LONG).show();
 			}
@@ -161,20 +164,72 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	
 	private void teachUs() {
 			
+		Dish whatToEat1 = WhatToEat.whatToEat();
+		Dish whatToEat2;
+		
+		while(true)
+		{
+			whatToEat2 = WhatToEat.whatToEat();
+			if(whatToEat1 != whatToEat2) break;
+		}
+		
+		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View dialogView = inflater.inflate(R.layout.teach, null);
 		
 		AlertDialog alertDialog;
-		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).create();
-		alertDialog.setTitle("What do you prefer?");
-		alertDialog.setMessage("TO BE DONE \nPICTURE A | PICTURE B");
-		alertDialog.setCanceledOnTouchOutside(true);
-		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TO BE DONE", new DialogInterface.OnClickListener() {
+		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).setTitle("What do you prefer?")
+			.setView(dialogView)
+			.create();
 
+		alertDialog.setCanceledOnTouchOutside(true);
+		
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, whatToEat1.name, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
+		
+		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Skip", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		
+		
+		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, whatToEat2.name, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		
+		
 		alertDialog.show();
+		
+//		UrlUtils.getFirstGoogleImage(whatToEat1.name, new ContentLoaderCallback<Bitmap>() {
+//
+//			@Override
+//			public void contentLoaded(Bitmap result) {
+//				//foodImg.setImageBitmap(result);
+//			}
+//
+//			@Override
+//			public void contentLoadingException(Exception e) {}
+//		});
+//		
+//		UrlUtils.getFirstGoogleImage(whatToEat2.name, new ContentLoaderCallback<Bitmap>() {
+//
+//			@Override
+//			public void contentLoaded(Bitmap result) {
+//				//foodImg.setImageBitmap(result);
+//			}
+//
+//			@Override
+//			public void contentLoadingException(Exception e) {}
+//		});
+		
 
 	}
 

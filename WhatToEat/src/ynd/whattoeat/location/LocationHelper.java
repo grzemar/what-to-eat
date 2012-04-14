@@ -32,10 +32,19 @@ public class LocationHelper implements LocationListener {
 
 	private List<LocationEventsListener> locationEventsListeners = new LinkedList<LocationEventsListener>();
 
+	private boolean updatingLocation = false;
+
 	private LocationHelper(Context context) {
 		this.context = context;
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		setInitialLocation();
+	}
+
+	public void startLocationUpdates() {
+		if (!updatingLocation) {
+			setInitialLocation();
+			listenFromBestProvider();
+			updatingLocation = true;
+		}
 	}
 
 	private void setInitialLocation() {
@@ -43,12 +52,9 @@ public class LocationHelper implements LocationListener {
 			reBestLocation(locationManager.getLastKnownLocation(provider));
 	}
 
-	public void startLocationUpdates() {
-		listenFromBestProvider();
-	}
-
 	public void stopLocationUpdates() {
 		locationManager.removeUpdates(this);
+		updatingLocation = false;
 	}
 
 	private void listenFromBestProvider() {
@@ -118,11 +124,11 @@ public class LocationHelper implements LocationListener {
 	}
 
 	protected boolean isBetterLocation(Location newLocation, Location oldLocation) {
-		if (oldLocation == null) {
-			return true;
-		}
 		if (newLocation == null) {
 			return false;
+		}
+		if (oldLocation == null) {
+			return true;
 		}
 
 		long timeDelta = newLocation.getTime() - oldLocation.getTime();

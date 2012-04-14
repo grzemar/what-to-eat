@@ -11,8 +11,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#000000"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
 
+        android:gravity="center_horizontal"
+		android:layout_gravity="center_horizontal">
+		
         <com.google.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"
@@ -26,7 +29,6 @@
             android:id="@+id/adProgressBar"
             android:layout_width="49dp"
             android:layout_height="49dp"
-            android:layout_marginLeft="135dp"
             android:gravity="center" />
     </LinearLayout>
 

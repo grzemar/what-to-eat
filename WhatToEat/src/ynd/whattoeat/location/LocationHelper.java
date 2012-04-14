@@ -60,7 +60,7 @@ public class LocationHelper implements LocationListener {
 	}
 
 	private String getBestProvider() {
-		return locationManager.getBestProvider(getBestProviderCriteria(), true);
+		return locationManager.getBestProvider(bestProviderCriteria, true);
 	}
 
 	@Override
@@ -162,10 +162,6 @@ public class LocationHelper implements LocationListener {
 
 	public Location getBestKnownLocation() {
 		return bestKnownLocation;
-	}
-
-	private Criteria getBestProviderCriteria() {
-		return bestProviderCriteria;
 	}
 
 	public void setBestProviderCriteria(Criteria bestProviderCriteria) {

@@ -3,17 +3,12 @@ package ynd.whattoeat;
 import ynd.whattoeat.location.LocationEventsListener;
 import ynd.whattoeat.location.LocationHelper;
 import ynd.whattoeat.location.LocationUnknownException;
-import ynd.whattoeat.utils.ContentLoaderCallback;
-import ynd.whattoeat.utils.UrlUtils;
 import ynd.whattoeat.weather.WeatherHelper;
 import ynd.whattoeat.weather.WeatherUnavailableException;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,9 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ads.Ad;
@@ -32,25 +24,18 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
-public class WhatToEatActivity extends Activity implements AdListener, LocationEventsListener {
-	private ImageView foodImg;
-	private TextView whatToEatTxt;
+public class WhatToEatActivity extends CommonActivity implements AdListener, LocationEventsListener {
 	private Button inputDataButton;
 	private Button whatToEatButton;
-	private Button mapButton;
-	private Button teachButton;
 	private Button menuButton;
-	
+	private Button teachButton;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
 
-		loadControls();
 		loadAd();
-		setClickListeners();
-
 		startLocationHelper();
 	}
 
@@ -67,7 +52,8 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		return criteria;
 	}
 
-	private void setClickListeners() {
+	@Override
+	public void setClickListeners() {
 		whatToEatButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -76,7 +62,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 			}
 		});
 
-		mapButton.setOnClickListener(new OnClickListener() {
+		menuButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -104,7 +90,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 				alertDialog.show();
 			}
 		});
-		
+
 		teachButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -112,7 +98,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 				teachUs();
 			}
 		});
-		
+
 	}
 
 	protected String getUsedData() {
@@ -142,104 +128,60 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	}
 
 	private void whatToEat() {
-		final ProgressDialog progressBar = ProgressDialog.show(this, "Loading...", "Determining best dish for you basing on:\n" + getUsedData());
-		final Dish whatToEat = WhatToEat.whatToEat();
-		UrlUtils.getFirstGoogleImage(whatToEat.name, new ContentLoaderCallback<Bitmap>() {
-
-			@Override
-			public void contentLoaded(Bitmap result) {
-				whatToEatTxt.setText(whatToEat.name);
-				foodImg.setImageBitmap(result);
-				progressBar.cancel();
-			}
-
-			@Override
-			public void contentLoadingException(Exception e) {
-				whatToEatTxt.setText(whatToEat.name);
-				progressBar.cancel();
-				Toast.makeText(WhatToEatActivity.this, "Couldn't load image, try again later.", Toast.LENGTH_LONG).show();
-			}
-		});
+		Intent intent = new Intent(this, ResultActivity.class);
+		startActivity(intent);
 	}
-	
+
 	private void teachUs() {
-			
+
 		Dish whatToEat1 = WhatToEat.whatToEat();
 		Dish whatToEat2;
-		
-		while(true)
-		{
+
+		while (true) {
 			whatToEat2 = WhatToEat.whatToEat();
-			if(whatToEat1 != whatToEat2) break;
+			if (whatToEat1 != whatToEat2)
+				break;
 		}
-		
-		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View dialogView = inflater.inflate(R.layout.teach, null);
-		
+
 		AlertDialog alertDialog;
-		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).setTitle("What do you prefer?")
-			.setView(dialogView)
-			.create();
+		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).setTitle("What do you prefer?").setView(dialogView).create();
 
 		alertDialog.setCanceledOnTouchOutside(true);
-		
-		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, whatToEat1.name, new DialogInterface.OnClickListener() {
+
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, whatToEat1.getName(), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
-		
+
 		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Skip", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
-		
-		
-		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, whatToEat2.name, new DialogInterface.OnClickListener() {
+
+		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, whatToEat2.getName(), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
-		
-		
+
 		alertDialog.show();
-		
-//		UrlUtils.getFirstGoogleImage(whatToEat1.name, new ContentLoaderCallback<Bitmap>() {
-//
-//			@Override
-//			public void contentLoaded(Bitmap result) {
-//				//foodImg.setImageBitmap(result);
-//			}
-//
-//			@Override
-//			public void contentLoadingException(Exception e) {}
-//		});
-//		
-//		UrlUtils.getFirstGoogleImage(whatToEat2.name, new ContentLoaderCallback<Bitmap>() {
-//
-//			@Override
-//			public void contentLoaded(Bitmap result) {
-//				//foodImg.setImageBitmap(result);
-//			}
-//
-//			@Override
-//			public void contentLoadingException(Exception e) {}
-//		});
-		
 
 	}
 
-	private void loadControls() {
-		foodImg = (ImageView) findViewById(R.id.imageFood);
-		whatToEatTxt = (TextView) findViewById(R.id.textWhatToEat);
-		inputDataButton = (Button) findViewById(R.id.buttonInputData);
-		whatToEatButton = (Button) findViewById(R.id.buttonWhatToEat);
-		mapButton = (Button) findViewById(R.id.buttonMap);
-		teachButton = (Button) findViewById(R.id.buttonTeach);
+	@Override
+	public void loadControls() {
+		whatToEatButton = (Button) findViewById(R.id.whatToEatButton);
+		inputDataButton = (Button) findViewById(R.id.inputDataButton);
+		teachButton = (Button) findViewById(R.id.teachButton);
+		menuButton = (Button) findViewById(R.id.menuButton);
 	}
 
 	@Override
@@ -313,4 +255,10 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	public void noLocationProviderAvailable() {
 		Toast.makeText(this, "Enable location provider for better results!", Toast.LENGTH_LONG).show();
 	}
+
+	@Override
+	protected int getLayoutId() {
+		return R.layout.main;
+	}
+
 }

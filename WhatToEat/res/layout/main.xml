@@ -10,12 +10,11 @@
         android:id="@+id/adLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:background="#000000"
-        android:orientation="vertical" 
-
         android:gravity="center_horizontal"
-		android:layout_gravity="center_horizontal">
-		
+        android:orientation="vertical" >
+
         <com.google.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"
@@ -37,42 +36,22 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <RelativeLayout
+        <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1" >
-
-            <ImageView
-                android:id="@+id/imageFood"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_launcher" />
-
-            <TextView
-                android:id="@+id/textWhatToEat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text=""
-                android:textColor="#ffffff"
-                android:shadowColor="#000000"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="1"
-                android:textSize="50dp" />
-        </RelativeLayout>
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:src="@drawable/ic_launcher" />
 
         <Button
-            android:id="@+id/buttonWhatToEat"
+            android:id="@+id/whatToEatButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="What To Eat?"
-            android:paddingTop="20dp"
             android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:text="What To Eat?"
             android:textSize="30dp" />
-        
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -80,7 +59,7 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/buttonInputData"
+                android:id="@+id/inputDataButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -88,15 +67,15 @@
                 android:text="Data used" />
 
             <Button
-                android:id="@+id/buttonTeach"
+                android:id="@+id/teachButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="Teach" />
-            
+
             <Button
-                android:id="@+id/buttonMap"
+                android:id="@+id/menuButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

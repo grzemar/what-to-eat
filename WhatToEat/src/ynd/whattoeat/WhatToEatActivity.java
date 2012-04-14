@@ -1,6 +1,5 @@
 package ynd.whattoeat;
 
-import ynd.whattoeat.location.LocationEventsListener;
 import ynd.whattoeat.location.LocationHelper;
 import ynd.whattoeat.location.LocationUnknownException;
 import ynd.whattoeat.utils.ContentLoaderCallback;
@@ -12,15 +11,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Criteria;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
@@ -28,7 +24,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
-public class WhatToEatActivity extends CommonActivity implements AdListener, LocationEventsListener {
+public class WhatToEatActivity extends CommonActivity implements AdListener {
 	private Button inputDataButton;
 	private Button whatToEatButton;
 	private Button menuButton;
@@ -40,20 +36,6 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 		super.onCreate(savedInstanceState);
 
 		loadAd();
-		startLocationHelper();
-	}
-
-	private void startLocationHelper() {
-		LocationHelper locationHelper = LocationHelper.getInstance(this);
-		locationHelper.setBestProviderCriteria(getBestLocationCriteria());
-		locationHelper.addLocationEventsListeners(this);
-	}
-
-	private Criteria getBestLocationCriteria() {
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-		criteria.setPowerRequirement(Criteria.POWER_LOW);
-		return criteria;
 	}
 
 	@Override
@@ -141,8 +123,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 		Dish whatToEat1 = WhatToEat.whatToEat();
 		Dish whatToEat2;
 
-		while(true)
-		{
+		while (true) {
 			whatToEat2 = WhatToEat.whatToEat();
 			if (whatToEat1 != whatToEat2)
 				break;
@@ -153,7 +134,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 
 		final ImageView foodImg1 = (ImageView) dialogView.findViewById(R.id.imageFood1);
 		final ImageView foodImg2 = (ImageView) dialogView.findViewById(R.id.imageFood2);
-		
+
 		AlertDialog alertDialog;
 		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).setTitle("What do you prefer?").setView(dialogView).create();
 
@@ -181,7 +162,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 		});
 
 		alertDialog.show();
-		
+
 		UrlUtils.getFirstGoogleImage(whatToEat1.getName(), new ContentLoaderCallback<Bitmap>() {
 
 			@Override
@@ -190,9 +171,10 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 			}
 
 			@Override
-			public void contentLoadingException(Exception e) {}
+			public void contentLoadingException(Exception e) {
+			}
 		});
-		
+
 		UrlUtils.getFirstGoogleImage(whatToEat2.getName(), new ContentLoaderCallback<Bitmap>() {
 
 			@Override
@@ -201,9 +183,9 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 			}
 
 			@Override
-			public void contentLoadingException(Exception e) {}
+			public void contentLoadingException(Exception e) {
+			}
 		});
-		
 
 	}
 
@@ -213,18 +195,6 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 		inputDataButton = (Button) findViewById(R.id.inputDataButton);
 		teachButton = (Button) findViewById(R.id.teachButton);
 		menuButton = (Button) findViewById(R.id.menuButton);
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		LocationHelper.getInstance(this).stopLocationUpdates();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		LocationHelper.getInstance(this).startLocationUpdates();
 	}
 
 	private void loadAd() {
@@ -267,24 +237,6 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 
 		View ad = this.findViewById(R.id.adView);
 		ad.setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void foundBetterLocation(Location newLocation) {
-		try {
-			WeatherHelper.getInstance().updateCachedWeather(LocationHelper.getInstance(this).getCurrentAddress());
-		} catch (WeatherUnavailableException e) {
-			e.printStackTrace();
-		} catch (LocationUnknownException e) {
-			e.printStackTrace();
-		} finally {
-			Toast.makeText(this, "New input data available, expect more accurate results!", Toast.LENGTH_LONG).show();
-		}
-	}
-
-	@Override
-	public void noLocationProviderAvailable() {
-		Toast.makeText(this, "Enable location provider for better results!", Toast.LENGTH_LONG).show();
 	}
 
 	@Override

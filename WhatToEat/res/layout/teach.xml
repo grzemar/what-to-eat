@@ -10,7 +10,7 @@
         android:layout_width="120dp"
         android:layout_height="188dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/foodicon" />
 
     <TextView
         android:id="@+id/textWhatToEat"
@@ -33,6 +33,6 @@
         android:layout_width="120dp"
         android:layout_height="188dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/foodicon" />
 
 </LinearLayout>

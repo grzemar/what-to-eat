@@ -15,8 +15,9 @@ public class WhatToEat {
 		new Dish( "Apple Pie",			TasteType.Sweet,	SizeType.Snack,		VegeType.Vegan,			"Description"), 
 		new Dish( "Spaghetti Bolonese",	TasteType.Salty,	SizeType.BigMeal,	VegeType.WithMeat,		"Description"), 
 		new Dish( "Fruit Salad",		TasteType.Sweet,	SizeType.SmallFood,	VegeType.Vegan,			"Description"), 
-		new Dish( "cereals with milk",	TasteType.Sweet,	SizeType.SmallFood,	VegeType.Vegan,			"Description"), 
+		new Dish( "Cereals with milk",	TasteType.Sweet,	SizeType.SmallFood,	VegeType.Vegan,			"Description"), 
 		new Dish( "Cookie",				TasteType.Sweet,	SizeType.Snack,		VegeType.Vegan,			"Description"), 
+		new Dish( "Nuts",				TasteType.Salty,	SizeType.Snack,		VegeType.Vegan,			"Description"), 
 		new Dish( "Nuts",				TasteType.Salty,	SizeType.Snack,		VegeType.Vegan,			"Description"), 
 	};
 

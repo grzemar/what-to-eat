@@ -107,8 +107,11 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 
 	protected String getUsedData() {
 		StringBuilder ret = new StringBuilder();
-		ret.append("User preferences\n");
+		ret.append("We will look for best food for you basing on:\n");
+		ret.append(" - Your preferences by far\n");
+		ret.append(" - ");
 		appendLocationInfo(ret);
+		ret.append(" - ");
 		appendWeatherInfo(ret);
 		return ret.toString();
 	}
@@ -117,7 +120,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 		try {
 			ret.append("Weather: " + WeatherHelper.getInstance().getCachedWeather());
 		} catch (WeatherUnavailableException e) {
-			ret.append("Weather not available");
+			ret.append("Weather: Not available");
 		}
 		ret.append("\n");
 	}
@@ -126,7 +129,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener, Loc
 		try {
 			ret.append("Location: " + LocationHelper.getInstance(this).getCurrentAddress().getLocality());
 		} catch (LocationUnknownException e) {
-			ret.append("Location not avaialble");
+			ret.append("Location: Not avaialble");
 		}
 		ret.append("\n");
 	}

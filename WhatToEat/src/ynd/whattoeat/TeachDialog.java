@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class TeachDialog extends Dialog implements OnClickListener {
 
@@ -20,14 +21,6 @@ public class TeachDialog extends Dialog implements OnClickListener {
 	private Button skipButton;
 	private Dish dish1;
 	private Dish dish2;
-
-	public TeachDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-		super(context, cancelable, cancelListener);
-	}
-
-	public TeachDialog(Context context, int theme) {
-		super(context, theme);
-	}
 
 	public TeachDialog(Context context) {
 		super(context);
@@ -108,8 +101,10 @@ public class TeachDialog extends Dialog implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.teachDialogLeftButton:
+			Toast.makeText(getContext(), "User likes " + dish1.getName(), Toast.LENGTH_LONG).show();
 			break;
 		case R.id.teachDialogRightButton:
+			Toast.makeText(getContext(), "User likes " + dish2.getName(), Toast.LENGTH_LONG).show();
 			break;
 		}
 		dismiss();

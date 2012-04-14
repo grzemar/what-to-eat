@@ -35,7 +35,9 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	private Button inputDataButton;
 	private Button whatToEatButton;
 	private Button mapButton;
-
+	private Button teachButton;
+	private Button menuButton;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,10 +101,20 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 				alertDialog.show();
 			}
 		});
+		
+		teachButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				teachUs();
+			}
+		});
+		
 	}
 
 	protected String getUsedData() {
 		StringBuilder ret = new StringBuilder();
+		ret.append("User preferences\n");
 		appendLocationInfo(ret);
 		appendWeatherInfo(ret);
 		return ret.toString();
@@ -146,6 +158,25 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 			}
 		});
 	}
+	
+	private void teachUs() {
+			
+		
+		AlertDialog alertDialog;
+		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).create();
+		alertDialog.setTitle("What do you prefer?");
+		alertDialog.setMessage("TO BE DONE \nPICTURE A | PICTURE B");
+		alertDialog.setCanceledOnTouchOutside(true);
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TO BE DONE", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alertDialog.show();
+
+	}
 
 	private void loadControls() {
 		foodImg = (ImageView) findViewById(R.id.imageFood);
@@ -153,6 +184,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		inputDataButton = (Button) findViewById(R.id.buttonInputData);
 		whatToEatButton = (Button) findViewById(R.id.buttonWhatToEat);
 		mapButton = (Button) findViewById(R.id.buttonMap);
+		teachButton = (Button) findViewById(R.id.buttonTeach);
 	}
 
 	@Override

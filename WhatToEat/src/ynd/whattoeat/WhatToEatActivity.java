@@ -163,7 +163,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 				dialog.dismiss();
 			}
 		});
-
+		
 		alertDialog.show();
 
 		UrlUtils.getFirstGoogleImage(whatToEat1.getName(), new ContentLoaderCallback<Bitmap>() {

@@ -40,6 +40,7 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 	private Button mapButton;
 	private Button teachButton;
 	private Button menuButton;
+
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -162,10 +163,14 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		});
 	}
 	
+
+	
 	private void teachUs() {
 			
 		Dish whatToEat1 = WhatToEat.whatToEat();
 		Dish whatToEat2;
+		
+
 		
 		while(true)
 		{
@@ -175,6 +180,9 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		
 		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View dialogView = inflater.inflate(R.layout.teach, null);
+		
+		final ImageView foodImg1 = (ImageView) dialogView.findViewById(R.id.imageFood1);
+		final ImageView foodImg2 = (ImageView) dialogView.findViewById(R.id.imageFood2);
 		
 		AlertDialog alertDialog;
 		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).setTitle("What do you prefer?")
@@ -208,27 +216,27 @@ public class WhatToEatActivity extends Activity implements AdListener, LocationE
 		
 		alertDialog.show();
 		
-//		UrlUtils.getFirstGoogleImage(whatToEat1.name, new ContentLoaderCallback<Bitmap>() {
-//
-//			@Override
-//			public void contentLoaded(Bitmap result) {
-//				//foodImg.setImageBitmap(result);
-//			}
-//
-//			@Override
-//			public void contentLoadingException(Exception e) {}
-//		});
-//		
-//		UrlUtils.getFirstGoogleImage(whatToEat2.name, new ContentLoaderCallback<Bitmap>() {
-//
-//			@Override
-//			public void contentLoaded(Bitmap result) {
-//				//foodImg.setImageBitmap(result);
-//			}
-//
-//			@Override
-//			public void contentLoadingException(Exception e) {}
-//		});
+		UrlUtils.getFirstGoogleImage(whatToEat1.name, new ContentLoaderCallback<Bitmap>() {
+
+			@Override
+			public void contentLoaded(Bitmap result) {
+				foodImg1.setImageBitmap(result);
+			}
+
+			@Override
+			public void contentLoadingException(Exception e) {}
+		});
+		
+		UrlUtils.getFirstGoogleImage(whatToEat2.name, new ContentLoaderCallback<Bitmap>() {
+
+			@Override
+			public void contentLoaded(Bitmap result) {
+				foodImg2.setImageBitmap(result);
+			}
+
+			@Override
+			public void contentLoadingException(Exception e) {}
+		});
 		
 
 	}

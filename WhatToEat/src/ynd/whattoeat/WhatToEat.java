@@ -50,7 +50,11 @@ public class WhatToEat {
 		new Dish( "Donut",				TasteType.Sweet,	SizeType.BigMeal,	VegeType.Vegetarian,	"Description"),
 		new Dish( "Strawberries",		TasteType.Sweet,	SizeType.Snack,		VegeType.Vegan,			"Description"),
 		new Dish( "Jelly ",				TasteType.Sweet,	SizeType.SmallFood,	VegeType.Vegetarian,	"Description"),
-		new Dish( "Fish and chips",		TasteType.Mixed,	SizeType.BigMeal,	VegeType.Vegetarian,		"Description"),
+		new Dish( "Fish and chips",		TasteType.Mixed,	SizeType.BigMeal,	VegeType.Vegetarian,	"Description"),
+		new Dish( "Shrimps ",			TasteType.Mixed,	SizeType.SmallFood,	VegeType.Vegetarian,	"Description"),
+		new Dish( "Fish and chips",		TasteType.Mixed,	SizeType.BigMeal,	VegeType.Vegetarian,	"Description"),
+		new Dish( "Oranges",			TasteType.Mixed,	SizeType.SmallFood,	VegeType.Vegetarian,	"Description"),
+		new Dish( "Apples",				TasteType.Mixed,	SizeType.SmallFood,	VegeType.Vegetarian,	"Description"),
 	};
 
 	public static Dish whatToEat() {

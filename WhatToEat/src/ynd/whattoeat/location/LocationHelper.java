@@ -102,6 +102,7 @@ public class LocationHelper implements LocationListener {
 		try {
 			addresses = geocoder.getFromLocation(bestKnownLocation.getLatitude(), bestKnownLocation.getLongitude(), 1);
 		} catch (IOException e) {
+			e.printStackTrace();
 		} finally {
 			if (addresses.isEmpty())
 				throw new LocationUnknownException();

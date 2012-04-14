@@ -83,7 +83,7 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 
 	protected String getUsedData() {
 		StringBuilder ret = new StringBuilder();
-		ret.append("We will look for best food for you basing on:\n");
+		ret.append("We are using all information we can get to detect what kinds of food you might be intrested in.\nTo find out what you might feel like eating at this moment we base on:\n");
 		ret.append(" - Your preferences by far\n");
 		ret.append(" - ");
 		appendLocationInfo(ret);

@@ -45,11 +45,12 @@ public class ResultActivity extends CommonActivity {
 	private void whatToEat() {
 		final ProgressDialog progressBar = ProgressDialog.show(this, "Loading...", "Determining best dish for you basing on:\n" + UsedData.getInstance(this).getUsedData());
 		final Dish whatToEat = WhatToEat.whatToEat();
+		dishName.setText(whatToEat.getName());
+		
 		UrlUtils.getFirstGoogleImage(whatToEat.getName(), false, new ContentLoaderCallback<Bitmap>() {
 
 			@Override
 			public void contentLoaded(Bitmap result) {
-				dishName.setText(whatToEat.getName());
 				dishImage.setImageBitmap(result);
 				progressBar.cancel();
 			}
@@ -57,8 +58,12 @@ public class ResultActivity extends CommonActivity {
 			@Override
 			public void contentLoadingException(Exception e) {
 				progressBar.cancel();
-				Toast.makeText(ResultActivity.this, "Couldn't determine best dish for you, try again later.", Toast.LENGTH_LONG).show();
-				ResultActivity.this.finish();
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Toast.makeText(ResultActivity.this, "Could not download image, sorry for problems", Toast.LENGTH_LONG).show();
+					}
+				});
 			}
 		});
 	}

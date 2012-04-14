@@ -87,7 +87,7 @@ public class LocationService extends Service implements LocationEventsListener {
 		} catch (LocationUnknownException e) {
 			e.printStackTrace();
 		} finally {
-			Toast.makeText(this, "New input data available, expect more accurate results!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "New input data available, expect more accurate results!", Toast.LENGTH_LONG).show();
 		}
 	}
 

@@ -2,21 +2,15 @@ package ynd.whattoeat;
 
 import ynd.whattoeat.location.LocationHelper;
 import ynd.whattoeat.location.LocationUnknownException;
-import ynd.whattoeat.utils.ContentLoaderCallback;
-import ynd.whattoeat.utils.UrlUtils;
 import ynd.whattoeat.weather.WeatherHelper;
 import ynd.whattoeat.weather.WeatherUnavailableException;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
@@ -122,74 +116,8 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 	}
 
 	private void teachUs() {
-
-		Dish whatToEat1 = WhatToEat.whatToEat();
-		Dish whatToEat2;
-
-		while (true) {
-			whatToEat2 = WhatToEat.whatToEat();
-			if (whatToEat1 != whatToEat2)
-				break;
-		}
-
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View dialogView = inflater.inflate(R.layout.teach, null);
-
-		final ImageView foodImg1 = (ImageView) dialogView.findViewById(R.id.imageFood1);
-		final ImageView foodImg2 = (ImageView) dialogView.findViewById(R.id.imageFood2);
-
-		AlertDialog alertDialog;
-		alertDialog = new AlertDialog.Builder(WhatToEatActivity.this).setTitle("What do you prefer?").setView(dialogView).create();
-
-		alertDialog.setCanceledOnTouchOutside(true);
-
-		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, whatToEat1.getName(), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-
-		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Skip", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-
-		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, whatToEat2.getName(), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-
-		alertDialog.show();
-
-		UrlUtils.getFirstGoogleImage(whatToEat1.getName(), true, new ContentLoaderCallback<Bitmap>() {
-
-			@Override
-			public void contentLoaded(Bitmap result) {
-				foodImg1.setImageBitmap(result);
-			}
-
-			@Override
-			public void contentLoadingException(Exception e) {
-			}
-		});
-
-		UrlUtils.getFirstGoogleImage(whatToEat2.getName(), true, new ContentLoaderCallback<Bitmap>() {
-
-			@Override
-			public void contentLoaded(Bitmap result) {
-				foodImg2.setImageBitmap(result);
-			}
-
-			@Override
-			public void contentLoadingException(Exception e) {
-			}
-		});
-
+		TeachDialog teachDialog = new TeachDialog(this);
+		teachDialog.show();
 	}
 
 	@Override

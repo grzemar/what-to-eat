@@ -55,6 +55,8 @@
             android:id="@+id/teachDialogLeftButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
             android:layout_gravity="center"
             android:layout_weight="2"
             android:text="" />
@@ -63,6 +65,8 @@
             android:id="@+id/teachDialogSkipButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="15dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:text="Skip" />
@@ -71,6 +75,8 @@
             android:id="@+id/teachDialogRightButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+          	android:paddingTop="5dp"
+            android:paddingBottom="15dp"
             android:layout_gravity="center"
             android:layout_weight="2"
             android:text="" />

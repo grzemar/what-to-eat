@@ -19,10 +19,10 @@ import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
 public class WhatToEatActivity extends CommonActivity implements AdListener {
-	private Button inputDataButton;
+	private Button infoButton;
 	private Button whatToEatButton;
 	private Button menuButton;
-	private Button teachButton;
+	private Button exitButton;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -46,12 +46,12 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(v.getContext(), Map.class);
-				startActivityForResult(myIntent, 0);
+				MenuDialog menuDialog = new MenuDialog(WhatToEatActivity.this);
+				menuDialog.show();
 			}
 		});
 
-		inputDataButton.setOnClickListener(new OnClickListener() {
+		infoButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -71,11 +71,11 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 			}
 		});
 
-		teachButton.setOnClickListener(new OnClickListener() {
+		exitButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				teachUs();
+				WhatToEatActivity.this.finish();
 			}
 		});
 
@@ -115,17 +115,12 @@ public class WhatToEatActivity extends CommonActivity implements AdListener {
 		startActivity(intent);
 	}
 
-	private void teachUs() {
-		TeachDialog teachDialog = new TeachDialog(this);
-		teachDialog.show();
-	}
-
 	@Override
 	public void loadControls() {
 		whatToEatButton = (Button) findViewById(R.id.whatToEatButton);
-		inputDataButton = (Button) findViewById(R.id.inputDataButton);
-		teachButton = (Button) findViewById(R.id.teachButton);
+		infoButton = (Button) findViewById(R.id.infoButton);
 		menuButton = (Button) findViewById(R.id.menuButton);
+		exitButton = (Button) findViewById(R.id.exitButton);
 	}
 
 	private void loadAd() {

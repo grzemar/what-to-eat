@@ -38,6 +38,7 @@ public class TeachDialog extends Dialog implements OnClickListener {
 
 	private void setLayout() {
 		setTitle("What do you prefer?");
+		setCanceledOnTouchOutside(true);
 		loadControls();
 		setButtonTexts();
 		loadImages(dish1, dish2);

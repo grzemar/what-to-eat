@@ -78,10 +78,63 @@ System uczący będzie zaimplementowany w formie sieci neuronowej której wspó�
            	\caption{Diagram komponentów programowych}
 	\end{figure}
 
+
+
 \section{Komponenty programowe}
-Specyfikacje komponentów programowych
+
+\subsection{Moduły wejścia}
+Komponent systemu zajmujący się pobraniem danych
+\begin{itemize}
+	\item lokalizacyjnych
+	\item pogodowych
+	\item czasowych
+\end{itemize}
+z API udostepnionego przez system Android.
+
+\subsection{Dane wejściowe}
+Celem tego komponentu jest przekonwertowanie oraz wyfiltrowanie danych pobranych przez moduły wejścia do formy akceptowalnej przez sieć neuronową. Dodatkowa warstwa umożliwia wprowadzanie zmian w kodzie komponentów dostarczających dane, bez zmiany interfejsu sieci neuronowej.
+
+\subsection{Baza preferencji użytkownika}
+Baza danych zapisana w pamięci trwałej telefonu, przechowująca preferencje użytkownika uzyskane na podstawie jego poprzednich wyborów. Wykorzystywane są one jako współczynniki w sieci neurnowej, dzięki nim sieć może dostosowywać się do  zmieniających się preferencji użytkownika.
+
+\subsection{Baza potraw}
+Z góry określona baza dostępnych w systemie potraw wraz z ich oznaczenia pod kątem
+\begin{itemize}
+	\item rozmiaru (delikatny, mały, średni, duży)
+	\item smaku (słony, słodki, kwaśny, nieistotny)
+	\item posiłku (śniadanie, obiad, kolacja, nieistotny)
+	\item diety (wegetariańska, koszerna, mięsna, nieistotna)
+	\item słowa kluczowe oznaczające gdzie można dostać daną potrawę (sklep spożywczy, pizzeria, restauracja meksykańska, itp.)
+\end{itemize}
+
+\subsection{Prezentacja i ocena propozycji}
+Głównym zadaniem tego komponentu jest zaprezentowanie użytkownikowi propozycji wygenerowanej przy pomocy sieci neuronowej w czytelnej i estetycznej formie. Interfejs będzie intuicyjny a każdy widoczny dla użytkownika ekran powinien zawierać co najwyżej kilka elementów takich jak zdjęcie lub przycisk, tak aby nie został on przytłoczony ilością informacji. 
+
+Zdjęcia produktów będą pobrane z wyszukiwarki obrazów google, dzięki temu użytkownik nie będzie odczuwał monotonii nawet wtedy gdy system zaproponuje mu kilka razy pod rząd tą samą potrawę.
+Po prezentacji potrawy użytkownik ma możliwość ocenić trafność przy pomocy dwóch przycisków “Good” i “Bad”. Wybór zostanie przeniesiony do bazy preferencji i będzie miał wpływ na przyszłe działanie sieci neuronowej.
+
+Gdy zaproponowany posiłek będzie tym którego użytkownik naprawdę pragnie, będzie mógł podzielić się swoim wyborem ze znajomymi na Facebooku, a aplikacja zaproponuje mu najbliższe miejsce gdzie może zjeść daną potrawę.
 
 \section{Przegląd przypadków użycia}
+
+\subsection{Pierwsze uruchomienie}
+\begin{itemize}
+\item Użytkownik włącza aplikacje i przechodzi test potrawa x vs potrawa y
+\item Użytkownik włącza aplikacje i pyta co chce zjeść
+\item System na podstawie początkowych preferencji oraz innych danych wyznacza dla użytkownika potrawę
+\item Użytkownik potwierdza zgodność z jego oczekiwaniami
+\item Użytkownik dzieli się swoim wyborem na Facebookui wyszukuje najbliższą restauracje
+\end{itemize}
+
+\subsection{Doświadczony użytkownik}
+\begin{itemize}
+\item Użytkownik włącza aplikacje i pyta co chce zjeść
+\item System na podstawie wczesniejszych prefykcjioraz innych danych wyznacza dla użytkownika potrawę
+\item Użytkownik nie potwierdza zgodności z jego oczekiwaniami
+\item System zapisuje ocenę użytkownika oraz proponuję mu inną potrawę
+\item Użytkownik potwierdza zgodność z jego oczekiwaniami
+\end{itemize}
+
 
 \section{Zadania do wykonania}
 \begin{itemize}
@@ -93,7 +146,15 @@ Specyfikacje komponentów programowych
   \item Research nad innymi sieciami społecznościowymi
   \item Strona Menu
   \item Opracowanie i wdrożenie metod kontroli umysłów
+  \item Dodanie nowych tasków
+  \item Siec neuronowa
+  \item Opracowanie formatu bazy preferencji
+  \item Testy systemu
+  \item Przygotowanie raportu z testów
+  \item Przygotowanie zbioru uczączego dla SN
+  \item Zmienić pobieranie obrazów potraw na losowe z listy zamiast top1
 \end{itemize}
+
 
 
 \end{document}

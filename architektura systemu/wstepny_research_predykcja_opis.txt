@@ -1,0 +1,30 @@
+Spośród wielu istniejących metod umożliwiających predykcję:
+-sieć neuronowa;
+-algorytm genetyczny;
+-logika rozmyta;
+-drzewa decyzyjne i klasyfikacyjne;
+-inne klasyfikatory;
+Należy podjąć decyzję o wyborze sposobu predykcji m.in. pod kątem wybranego systemu (Android).
+
+Sieć neuronowa:
+-Zagadnienie dobrze znane, są dostępne frameworki ułatwiające tworzenie sieci, także na Androida.
+-Uczenie może odbywać się na bieżąco, gdy aplikacja rozpoczęła już wykonywanie predykcji, co pozwoli na wykorzystanie bazy preferencji.
+Można ewentualnie wykorzystać gotowe frameworki, jak np. Neuroph zawierający zestaw gotowych klas i funkcji ułatwiających tworzenie sieci:
+http://neuroph.sourceforge.net/
+
+Algorytm genetyczny:
+-W wybranym temacie mogą wystąpić trudności z krzyżowaniem i mutowaniem osobników, co utrudni tworzenie aplikacji.
+
+Logika rozmyta:
+-Nie znaleziono żadnych frameworków ułatwiających tworzenie aplikacji wykorzystujących logikę rozmytą, niewiele jest też przykładów jej wykorzystania na Androidzie.
+
+Drzewa decyzyjne i klasyfikacyjne:
+-Określenie, co ma być węzłem w takim drzewie może być trudne, brakuje gotowych rozwiązań ułatwiających tworzenie tego typu aplikacji na Androida.
+-Implementacja dość łatwa.
+
+Inne klasyfikatora:
+-Niepopularne przy tworzeniu tego typu systemów - brak danych na temat trudności wykonania i użyteczności.
+
+Podsumowanie:
+
+Najlepszym rozwiązaniem pod kątem przyjętych kryteriów okazuje się być sieć neuronowa.

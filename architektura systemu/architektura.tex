@@ -1,0 +1,86 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+\documentclass[a4paper,twoside,11pt]{article}
+\usepackage[polish]{babel}
+\usepackage[MeX]{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst,graphicx,amsmath}
+\usepackage[left=2cm,top=2cm,right=2cm,nohead]{geometry}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{float}
+\frenchspacing
+\pagestyle{plain}
+
+\makeatletter
+\renewcommand\@seccntformat[1]{\csname the#1\endcsname.\quad}
+\renewcommand\numberline[1]{#1.\hskip0.7em}
+\makeatother
+
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\scriptsize\bfseries}
+{\end{list}}
+
+\newenvironment{mytinylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\tiny\bfseries}
+{\end{list}}
+
+\usepackage{graphicx}
+\usepackage{color}
+
+\author{\\ ~ \\ Tomasz Gański \\
+Tomasz Gieniusz \\
+Bartosz Jankowski\\
+Grzegorz Marcinkowski\\
+Łukasz Odzioba\\
+Jacek Weremko}
+\title{\LARGE Wykrywacz zachcianek gastronomicznych}
+
+\begin{document}
+
+\input{strona_tytulowa}
+
+\tableofcontents
+
+\newpage
+
+\section{Cel projektu}
+Celem projektu jest stworzenie systemu doradczego, ułatwiającego życie każdego człowieka. Każdy z nas bywa w sytuacjach, gdy jest głodny lecz niezdecydowany co do konkretnej potrawy. \\ 
+
+System na podstawie wielu parametrów, takich jak wiek użytkownika, aktualna pora dnia, roku, pogoda, itp. będzie w stanie ułatwić użytkownikowi podjęcie decyzji sugerując mu typowe potrawy, które mogą pobudzić jego kubki smakowe.
+
+\section{Technologia}
+Projekt zostanie wykonany na platformę mobilną Android (zgodność z wersjami Donut i nowszymi). Wykorzystane zostanie natywne API systemu, a także system AdMob w celu wyświetlania reklam po umieszczeniu aplikacji w Android Market. \\
+
+Aplikacja do działania będzie wymagała dostępu do internetu oraz aktualnej lokacji użytkownika. \\
+
+System uczący będzie zaimplementowany w formie sieci neuronowej której współczynniki będa zapisywane do pamięci trwałej, tak aby zachować jej stan pomiędzy uruchomieniami aplikacji.
+
+\section{Struktura systemu}
+\subsection{Struktura sprzętowa}
+Schematyczny diagram komponentów sprzętowych (nienormowany w UML) albo diagram wdrożenia.
+\subsection{Struktura programowa}
+Diagram komponentów programowych z podziałem na podsystemy i/lub warstwy.
+
+\section{Komponenty programowe}
+Specyfikacje komponentów programowych
+
+\section{Przegląd przypadków użycia}
+
+\section{Zadania do wykonania}
+\begin{itemize}
+  \item Dodanie bazy posiłków
+  \item Połączenie z Facebookiem
+  \item Wstępny research nad predykcją
+  \item Interfejs + grafiki
+  \item Dopracowanie mapy
+  \item Research nad innymi sieciami społecznościowymi
+  \item Strona Menu
+  \item Opracowanie i wdrożenie metod kontroli umysłów
+  \item Dodanie nowych tasków
+  \item Architektura systemu - dokument
+\end{itemize}
+
+
+\end{document}
